@@ -11,14 +11,8 @@
     </div>
     <h1>@ViewBag.Data</h1>
     <br />
-    <div>
-        <div align="left">
-            <a asp-controller="Home" asp-action="RoomRequest">◄ Enviar otro formulario</a>
-        </div>
-    </div>
 }
-else
-{
+
     @if (ViewBag.Error == true)
     {
     <div class="alert alert-danger" role="alert">
@@ -216,4 +210,4 @@ else
         </div>
       </div>
     </div>
-}
+

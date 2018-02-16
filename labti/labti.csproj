@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-labti-7F531F6C-21C3-4217-A8EE-A7117A9227A4</UserSecretsId>
-    <ApplicationIcon>wwwroot\labtifav.ico</ApplicationIcon>
+    <ApplicationIcon>wwwroot\labtifavV2.ico</ApplicationIcon>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
 
