@@ -68,32 +68,34 @@ namespace labti.Controllers
 
                 DateTime fechaProyecto = Convert.ToDateTime(solicitud.FechaProyecto);
                 String myDay = fechaProyecto.DayOfWeek.ToString().ToLower();
-                String d = null;
+ 
+                bool lu=false; bool ma=false; bool mi=false; bool ju=false; bool vi=false; bool sa=false;
+
                 foreach (var day in _context.Days.ToList())
                 {
                     if(myDay.Equals("monday")) // LUNES
                     {
-                        d = "LUNES";
+                        lu = true;
                     }else if (myDay.Equals("tuesday")){
-                        d = "MARTES";
+                        ma = true;
                     }else if (myDay.Equals("wednesday")){
-                        d = "MIERCOLES";
+                        mi = true;
                     }
                     else if (myDay.Equals("thursday")){
-                        d = "JUEVES";
+                        ju = true;
                     }
                     else if (myDay.Equals("friday")){
-                        d = "VIERNES";
+                        vi = true;
                     }
                     else if (myDay.Equals("saturday"))
                     {
-                        d = "SABADO";
+                        sa = true;
                     }
                 }
-                var queryDay = _context.Days.Where(dd => dd.DayName.Equals(d)).SingleOrDefault();
 
                 //Crear asignatura
-                _context.Asignaturas.Add(CreateSubject(solicitud, curso, ProfesorAsignado));
+                var asg = CreateSubject(solicitud, curso, ProfesorAsignado, lu,ma,mi,ju,vi,sa);
+                _context.Asignaturas.Add(asg);
 
                 //Cambiar estado de la solicitud
                 solicitud.Estado = APROBADA;
@@ -112,7 +114,7 @@ namespace labti.Controllers
         }
 
         private Asignatura CreateSubject(String nombre, int horai, int horaf, String seccion, String codigo,
-            Curso curso, int profesor)
+            Curso curso, int profesor, bool lu, bool ma, bool mi, bool ju, bool vi, bool sa)
         {
             var p = _context.Profesores.Find(profesor);
             Asignatura asignatura = new Asignatura {
@@ -124,12 +126,18 @@ namespace labti.Controllers
                 Curso = curso,
                 Profesor = p,
                 CursoId = curso.CursoId,
-                ProfesorId = profesor
+                ProfesorId = profesor,
+                isLunes = lu,
+                isMartes = ma,
+                isMiercoles = mi,
+                isJueves = ju,
+                isViernes = vi,
+                isSabado = sa
             };
             return asignatura;
         }
 
-        private Asignatura CreateSubject(Solicitud solicitud, Curso curso, int teacher)
+        private Asignatura CreateSubject(Solicitud solicitud, Curso curso, int teacher, bool lu, bool ma, bool mi, bool ju, bool vi, bool sa)
         {
             var p = _context.Profesores.Find(teacher);
             Asignatura asignatura = new Asignatura
@@ -142,7 +150,13 @@ namespace labti.Controllers
                 Curso = curso,
                 Profesor = p,
                 CursoId = curso.CursoId,
-                ProfesorId = teacher
+                ProfesorId = teacher,
+                isLunes = lu,
+                isMartes = ma,
+                isMiercoles = mi,
+                isJueves = ju,
+                isViernes = vi,
+                isSabado = sa
             };
             return asignatura;
         }

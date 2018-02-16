@@ -14,7 +14,5 @@ namespace labti.Models
         [Required]
         public String DayName { get; set; }
 
-        public int AsignaturaId { get; set; }
-
     }
 }

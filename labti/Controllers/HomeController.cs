@@ -60,7 +60,9 @@ namespace labti.Controllers
             ViewBag.Search = true;
             ViewBag.Room = selectedRoom;
             var query = _context.Profesores.OrderBy(p => p.FirstName).ThenBy(p => p.LastName);
+           //var query2 = _context.Asignaturas.OrderBy(a => a.D)
             HViewModel.Profesores = query.ToList();
+            
             return View(HViewModel);
         }
 
@@ -71,9 +73,9 @@ namespace labti.Controllers
         {
             Curso curso = _context.Cursos.Where(c => c.CursoName.Equals(CourseName)).FirstOrDefault();
 
-            Asignatura asignatura = CreateSubject(Nombre, HoraInicio, HoraFin, Seccion, Codigo, curso, Profesor);
+            Asignatura asignatura = CreateSubject(Nombre, HoraInicio, HoraFin, Seccion, Codigo, curso, Profesor, isLunes, isMartes, isMiercoles, isJueves, isViernes, isSabado);
 
-            _context.Asignaturas.Add(asignatura);
+            _context.Add(asignatura);
 
             _context.SaveChanges();
             HViewModel.SubjectAdded = "Asignatura agregada exitosamente.";
@@ -81,7 +83,7 @@ namespace labti.Controllers
         }
 
         private Asignatura CreateSubject(String Nombre, int HoraInicio, int HoraFin, String Seccion, String Codigo,
-            Curso Curso, int Profesor)
+            Curso Curso, int Profesor, bool lu, bool ma, bool mi, bool ju, bool vi, bool sa)
         {
             var professor = _context.Profesores.Find(Profesor);
             Asignatura asignatura = new Asignatura
@@ -94,7 +96,13 @@ namespace labti.Controllers
                 Curso = Curso,
                 Profesor = professor,
                 CursoId = Curso.CursoId,
-                ProfesorId = professor.ProfesorId
+                ProfesorId = professor.ProfesorId,
+                isLunes = lu,
+                isMartes = ma,
+                isMiercoles = mi,
+                isJueves = ju,
+                isViernes = vi,
+                isSabado = sa
             };
             
             return asignatura;

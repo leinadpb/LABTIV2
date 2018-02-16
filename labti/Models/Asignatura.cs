@@ -36,8 +36,13 @@ namespace labti.Models
         [ForeignKey("CursoId")]
         public int CursoId { get; set; }
         public Curso Curso { get; set; }
-        
-        //Navigation properties
-        public List<Day> Days { get; set; }
+
+        public bool isLunes { get; set; }
+        public bool isMartes { get; set; }
+        public bool isMiercoles { get; set; }
+        public bool isJueves { get; set; }
+        public bool isViernes { get; set; }
+        public bool isSabado { get; set; }
+
     }
 }

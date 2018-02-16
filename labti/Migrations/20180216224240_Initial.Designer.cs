@@ -11,7 +11,7 @@ using System;
 namespace labti.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180215205328_Initial")]
+    [Migration("20180216224240_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,6 +93,18 @@ namespace labti.Migrations
 
                     b.Property<string>("Seccion");
 
+                    b.Property<bool>("isJueves");
+
+                    b.Property<bool>("isLunes");
+
+                    b.Property<bool>("isMartes");
+
+                    b.Property<bool>("isMiercoles");
+
+                    b.Property<bool>("isSabado");
+
+                    b.Property<bool>("isViernes");
+
                     b.HasKey("AsignaturaId");
 
                     b.HasIndex("CursoId");
@@ -120,14 +132,10 @@ namespace labti.Migrations
                     b.Property<int>("DayId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AsignaturaId");
-
                     b.Property<string>("DayName")
                         .IsRequired();
 
                     b.HasKey("DayId");
-
-                    b.HasIndex("AsignaturaId");
 
                     b.ToTable("Days");
                 });
@@ -136,8 +144,6 @@ namespace labti.Migrations
                 {
                     b.Property<int>("ProfesorId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AsignaturaId");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -354,14 +360,6 @@ namespace labti.Migrations
                     b.HasOne("labti.Models.Profesor", "Profesor")
                         .WithMany("Asignaturas")
                         .HasForeignKey("ProfesorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("labti.Models.Day", b =>
-                {
-                    b.HasOne("labti.Models.Asignatura")
-                        .WithMany("Days")
-                        .HasForeignKey("AsignaturaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

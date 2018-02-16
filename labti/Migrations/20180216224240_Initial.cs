@@ -62,12 +62,24 @@ namespace labti.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Days",
+                columns: table => new
+                {
+                    DayId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DayName = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Days", x => x.DayId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Profesores",
                 columns: table => new
                 {
                     ProfesorId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AsignaturaId = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 30, nullable: false),
                     LastName = table.Column<string>(maxLength: 30, nullable: false)
                 },
@@ -211,7 +223,13 @@ namespace labti.Migrations
                     HoraInicio = table.Column<int>(nullable: false),
                     Nombre = table.Column<string>(maxLength: 60, nullable: false),
                     ProfesorId = table.Column<int>(nullable: false),
-                    Seccion = table.Column<string>(nullable: true)
+                    Seccion = table.Column<string>(nullable: true),
+                    isJueves = table.Column<bool>(nullable: false),
+                    isLunes = table.Column<bool>(nullable: false),
+                    isMartes = table.Column<bool>(nullable: false),
+                    isMiercoles = table.Column<bool>(nullable: false),
+                    isSabado = table.Column<bool>(nullable: false),
+                    isViernes = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -265,26 +283,6 @@ namespace labti.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Days",
-                columns: table => new
-                {
-                    DayId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AsignaturaId = table.Column<int>(nullable: false),
-                    DayName = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Days", x => x.DayId);
-                    table.ForeignKey(
-                        name: "FK_Days_Asignaturas_AsignaturaId",
-                        column: x => x.AsignaturaId,
-                        principalTable: "Asignaturas",
-                        principalColumn: "AsignaturaId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Asignaturas_CursoId",
                 table: "Asignaturas",
@@ -335,11 +333,6 @@ namespace labti.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Days_AsignaturaId",
-                table: "Days",
-                column: "AsignaturaId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Solicitudes_TecnicoId",
                 table: "Solicitudes",
                 column: "TecnicoId");
@@ -347,6 +340,9 @@ namespace labti.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Asignaturas");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -369,22 +365,19 @@ namespace labti.Migrations
                 name: "Solicitudes");
 
             migrationBuilder.DropTable(
+                name: "Cursos");
+
+            migrationBuilder.DropTable(
+                name: "Profesores");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Asignaturas");
-
-            migrationBuilder.DropTable(
                 name: "Tecnicos");
-
-            migrationBuilder.DropTable(
-                name: "Cursos");
-
-            migrationBuilder.DropTable(
-                name: "Profesores");
         }
     }
 }
