@@ -1,0 +1,209 @@
+﻿@model HorarioViewModel
+@{
+    ViewData["Title"] = "Schedules";
+}
+@{
+    var courses = new List<String>() { "FD401", "FD402", "FD403", "FD404", "FD405", "FD411", "FD412", "FD413", "FD414", "FD415" };
+}
+@if(ViewBag.SuccessInfo != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.SuccessInfo
+    </div>
+
+}
+<div class="spaceBetween"></div>
+<div>
+    <form asp-controller="Home" asp-action="Schedules" method="get">
+        <div class="form-group">
+            <label for="room"><b>Seleccione un aula</b></label>
+            <select name="selectedRoom" class="form-control" id="room" required>
+                @foreach (var c in courses)
+                {
+                    <option>@c</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-sm btn-block">Ver horario</button>
+        </div>
+    </form>
+</div>
+<hr />
+<div>
+    @if (ViewBag.Search == true)
+    {
+        @if (ViewBag.Room != null)
+        {
+            <!-- Modal -->
+            <div class="modal fade" id="addSubject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <form asp-controller="home" asp-action="AddAsignatura" method="post">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Agregar asignatura</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <input type="hidden" name="CourseName" value="@ViewBag.Room" />
+                                <div class="row">
+                                    <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Asignatura</b></div>
+                                    <div class="col-md-8 inputFieldForm" align="left">
+                                        <input name="Nombre" class="form-control form-control-sm" type="text">
+                                        <span class="ErrorMessage"></span>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col"></div>
+                                    <div class="col">
+                                        <input name="Codigo" type="text" class="form-control" placeholder="Código">
+                                        <span class="ErrorMessage"></span>
+                                    </div>
+                                    <div class="col">
+                                        <input name="Seccion" type="text" class="form-control" placeholder="Sección">
+                                        <span class="ErrorMessage"></span>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col"></div>
+                                    <div class="col">
+                                        <input name="HoraInicio" type="number" class="form-control" placeholder="Hora de inicio" max="22" min="7">
+                                        <span class="ErrorMessage"></span>
+                                    </div>
+                                    <div class="col">
+                                        <input name="HoraFin" type="number" class="form-control" placeholder="Hora de fin" max="22" min="7">
+                                        <span class="ErrorMessage"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Profesor</b></div>
+                                    <div class="col-md-8 inputFieldForm" align="left">
+                                        <select name="Profesor" class="form-control" id="trimestre">
+                                            @foreach(var p in Model.Profesores)
+                                            {
+                                                string fullname = p.FirstName + " " + p.LastName;
+                                                <option value="@p.ProfesorId">@fullname</option>
+
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="spaceBetween"></div>
+                                <div align="center">Días</div>
+                                <div class="spaceBetweenLitte"></div>
+                                <div class="row" align="center">
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input name="isLunes" class="form-check-input" type="checkbox" id="defaultCheck1">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                LUNES
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input name="isMartes" class="form-check-input" type="checkbox" id="defaultCheck1">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                MARTES
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input name="isMiercoles" class="form-check-input" type="checkbox" id="defaultCheck1">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                               MIERCOLES
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" align="center">
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input name="isJueves" class="form-check-input" type="checkbox" id="defaultCheck1">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                JUEVES
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input name="isViernes" class="form-check-input" type="checkbox" id="defaultCheck1">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                VIERNES
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input name="isSabado" class="form-check-input" type="checkbox" id="defaultCheck1">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                SABADO
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <div class="spaceBetweenLitte"></div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="inputFieldForm">
+                                            <button type="submit" class="btn btn-primary btn-block">Agregara asignatura</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!---->
+                    </form>
+                </div>
+            </div>
+            <!-- -->
+            <div align="center">
+                <h4>Horario de clase - <span>@ViewBag.Room</span></h4>
+                <div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSubject">
+                        <span style="font-size:1.4rem;font-weight:600;color:white;"><b>+</b></span>
+                    </button>
+                </div>
+            </div>
+            <div class="spaceBetweenLitte"></div>
+            <!-- Schedule -->
+            <div class="Schedule">
+                <table class="table table-bordered table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">H</th>
+                            <th scope="col">LUN</th>
+                            <th scope="col">MAR</th>
+                            <th scope="col">MIE</th>
+                            <th scope="col">JUE</th>
+                            <th scope="col">VIE</th>
+                            <th scope="col">SAB</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 7; i <= 22; i++)
+                        {
+                            <tr>
+                                <th scope="row">@i</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+        }
+    }
+</div>

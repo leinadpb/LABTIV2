@@ -1,0 +1,238 @@
+﻿@model SolicitudesViewModel
+@{
+    ViewData["Title"] = "Solicitudes";
+}
+@{
+    var courses = new List<String>() { "FD401", "FD402", "FD403", "FD404", "FD405", "FD411", "FD412", "FD413", "FD414", "FD415" };
+}
+<div class="spaceBetween"></div>
+@if (Model.Errors != null) //Show Errors and information
+{
+    @if (Model.Errors.AddedSuccessfully != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @{
+                string data = Model.Errors.AddedSuccessfully;
+            }
+            @data
+        </div>
+    }
+}
+<div>
+    <div>
+        <h4>Solicitudes de aulas</h4>
+        <div class="spaceBetween"></div>
+    </div>
+    <div>
+        <h6>Nuevas <span>(<span>@ViewBag.CantidadNuevas</span>)</span></h6>
+        <div class="spaceBetween"></div>
+    </div>
+    <!-- Lista de Solicitudes -->
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" style="font-size:0.80rem;">FECHA DE SOLICITUD</th>
+                    <th scope="col" style="font-size:0.80rem;">ASIGNATURA</th>
+                    <th scope="col" style="font-size:0.80rem;">TRIMESTRE</th>
+                    <th scope="col" style="font-size:0.80rem;">PROFESOR</th>
+                    <th scope="col" style="font-size:0.80rem;">CAPACIDAD</th>
+                    <th scope="col" style="font-size:0.80rem;">HORAS</th>
+                    <th scope="col" style="font-size:0.80rem;">INICIO</th>
+                    <th scope="col" style="font-size:0.80rem;">FIN</th>
+                    <th scope="col" style="font-size:0.80rem;">FECHA DE PROYECTO</th>
+                    <th scope="col" style="font-size:0.80rem;"></th>
+                    <th scope="col" style="font-size:0.80rem;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var solicitud in Model.QueriesSolicitudes.Nuevas)
+                {
+                    var duration = solicitud.HoraFin - solicitud.HoraInicio;
+                    <tr>
+                        <!-- Modal -->
+                        <td class="modal fade" id="approve-@solicitud.SolicitudId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <form asp-controller="admin" asp-action="Approve" method="post">
+                                <input name="id" type="hidden" value="@solicitud.SolicitudId" />
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Curso</b></div>
+                                                <div class="col-md-8 inputFieldForm" align="left">
+                                                    <select name="CursoAsignado" class="form-control" id="trimestre">
+                                                        @foreach (var c in courses)
+                                                             {
+                                                            <option>@c</option>
+                                                            }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Profesor</b></div>
+                                                <div class="col-md-8 inputFieldForm" align="left">
+                                                    <select name="ProfesorAsignado" class="form-control" id="trimestre">
+                                                        @foreach (var p in Model.Profesores)
+                                                        { 
+                                                          string fullnameTeacher = p.FirstName + " " + p.LastName;
+                                                          <option value="@p.ProfesorId">@fullnameTeacher</option>
+
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Nota</b></div>
+                                                <div class="col-md-8 inputFieldForm" align="left">
+                                                    <textarea name="Notas" class="form-control form-control-sm" cols="4"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Confirmar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:0.8rem;">@solicitud.FechaSolicitud</td>
+                        <td style="font-size:0.80rem;">@solicitud.Asignatura</td>
+                        <td style="font-size:0.80rem;">@solicitud.Trimestre</td>
+                        <td style="font-size:0.80rem;">@solicitud.Profesor</td>
+                        <td style="font-size:0.80rem;">@solicitud.CantEstudiantes</td>
+                        <td style="font-size:0.80rem;">@duration</td>
+                        <td style="font-size:0.80rem;">@solicitud.HoraInicio</td>
+                        <td style="font-size:0.80rem;">@solicitud.HoraFin</td>
+                        <td style="font-size:0.80rem;">@solicitud.FechaProyecto</td>
+                        <td style="font-size:0.80rem;">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#approve-@solicitud.SolicitudId">
+                                Aprobar
+                            </button>
+                        </td>
+                        <td style="font-size:0.80rem;">
+                            <form asp-controller="admin" asp-action="Deny" method="post">
+                                <input name="id" type="hidden" value="@solicitud.SolicitudId" />
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger">Denegar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="spaceBetween"></div>
+    <div>
+        <h6>Aprobadas <span>(<span>@ViewBag.CantidadAprobadas</span>)</span></h6>
+        <div class="spaceBetween"></div>
+    </div>
+    <!-- Lista de Solicitudes -->
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" style="font-size:0.80rem;">FECHA DE SOLICITUD</th>
+                    <th scope="col" style="font-size:0.80rem;">ASIGNATURA</th>
+                    <th scope="col" style="font-size:0.80rem;">TRIMESTRE</th>
+                    <th scope="col" style="font-size:0.80rem;">PROFESOR</th>
+                    <th scope="col" style="font-size:0.80rem;">CAPACIDAD</th>
+                    <th scope="col" style="font-size:0.80rem;">HORAS</th>
+                    <th scope="col" style="font-size:0.80rem;">INICIO</th>
+                    <th scope="col" style="font-size:0.80rem;">FIN</th>
+                    <th scope="col" style="font-size:0.80rem;">FECHA DE PROYECTO</th>
+                    <th scope="col" style="font-size:0.80rem;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var solicitud in Model.QueriesSolicitudes.Aprobadas)
+                {
+                    var duration = solicitud.HoraFin - solicitud.HoraInicio;
+                    <tr>
+                        <td style="font-size:0.8rem;">@solicitud.FechaSolicitud</td>
+                        <td style="font-size:0.80rem;">@solicitud.Asignatura</td>
+                        <td style="font-size:0.80rem;">@solicitud.Trimestre</td>
+                        <td style="font-size:0.80rem;">@solicitud.Profesor</td>
+                        <td style="font-size:0.80rem;">@solicitud.CantEstudiantes</td>
+                        <td style="font-size:0.80rem;">@duration</td>
+                        <td style="font-size:0.80rem;">@solicitud.HoraInicio</td>
+                        <td style="font-size:0.80rem;">@solicitud.HoraFin</td>
+                        <td style="font-size:0.80rem;">@solicitud.FechaProyecto</td>
+                        <td style="font-size:0.80rem;">
+                            <form asp-controller="admin" asp-action="Delete" method="post">
+                                <input name="id" type="hidden" value="@solicitud.SolicitudId" />
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-dark">Eliminar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="spaceBetween"></div>
+    <div>
+        <h6>Denegadas <span>(<span>@ViewBag.CantidadDenegadas</span>)</span></h6>
+        <div class="spaceBetween"></div>
+    </div>
+    <!-- Lista de Solicitudes -->
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" style="font-size:0.80rem;">FECHA DE SOLICITUD</th>
+                    <th scope="col" style="font-size:0.80rem;">ASIGNATURA</th>
+                    <th scope="col" style="font-size:0.80rem;">TRIMESTRE</th>
+                    <th scope="col" style="font-size:0.80rem;">PROFESOR</th>
+                    <th scope="col" style="font-size:0.80rem;">CAPACIDAD</th>
+                    <th scope="col" style="font-size:0.80rem;">HORAS</th>
+                    <th scope="col" style="font-size:0.80rem;">INICIO</th>
+                    <th scope="col" style="font-size:0.80rem;">FIN</th>
+                    <th scope="col" style="font-size:0.80rem;">FECHA DE PROYECTO</th>
+                    <th scope="col" style="font-size:0.80rem;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var solicitud in Model.QueriesSolicitudes.Denegadas)
+                {
+                    var duration = solicitud.HoraFin - solicitud.HoraInicio;
+                    <tr>
+                        <td style="font-size:0.8rem;">@solicitud.FechaSolicitud</td>
+                        <td style="font-size:0.80rem;">@solicitud.Asignatura</td>
+                        <td style="font-size:0.80rem;">@solicitud.Trimestre</td>
+                        <td style="font-size:0.80rem;">@solicitud.Profesor</td>
+                        <td style="font-size:0.80rem;">@solicitud.CantEstudiantes</td>
+                        <td style="font-size:0.80rem;">@duration</td>
+                        <td style="font-size:0.80rem;">@solicitud.HoraInicio</td>
+                        <td style="font-size:0.80rem;">@solicitud.HoraFin</td>
+                        <td style="font-size:0.80rem;">@solicitud.FechaProyecto</td>
+                        <td style="font-size:0.80rem;">
+                            <form asp-controller="admin" asp-action="Delete" method="post">
+                                <input name="id" type="hidden" value="@solicitud.SolicitudId" />
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-dark">Eliminar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

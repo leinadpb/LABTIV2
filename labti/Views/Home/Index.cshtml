@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+<div class="ServiceTitle" align="center">
+    <h5 class="ServiceTitleText">Horario de servicios</h5>
+</div>
+<div class="spaceBetween"></div>
+<!-- Services -->
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-3">
+        <div class="myOuterGroup">
+            <div align="center">
+                <h6>LUN - VIE</h6>
+                <div class="basicDivider"></div>
+            </div>
+            <div class="myInnerGroup" align="center">
+                7:00AM - 10:00PM
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="myOuterGroup">
+            <div align="center">
+                <h6>SAB</h6>
+                <div class="basicDivider"></div>
+            </div>
+            <div class="myInnerGroup" align="center">
+                8:00AM - 6:00PM
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+<!---->
+<div class="spaceBetween"></div>
+<div class="spaceBetween"></div>
+<div class="row myOuterGroup">
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <!-- Image -->
+        <div class="ServiceImage">
+            <img src="~/images/calendar.jpg" class="img-thumbnail mx-auto d-block" alt="...">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <!-- Description -->
+        <a class="infoLink" asp-controller="Home" asp-action="Schedules">
+            <div class="infoText">
+                <h5 class="text-left infoTextTitle">Horarios de asignaturas, cursos y talleres</h5>
+                <p>Si necesitas reservar un salón de clase o utilizar este laboratorio por varias horas, ¡ahora tienes como planificarte! Observa los horarios de asignaturas, cursos y talleres de cada curso de este laboratorio y planifícate</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="spaceBetween"></div>
+<div class="spaceBetween"></div>
+<div class="row myOuterGroup">
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+        <!-- Description -->
+        <a class="infoLink" asp-controller="Home" asp-action="RoomRequest">
+            <div class="infoText">
+                <h5 class="text-right infoTextTitle">Reserva de salones de clases</h5>
+                <p class="text-right">Si necesitas impartir una o varias asignaturas, talleres y/o cursos en este laboratorio, debes de hacer la solicitud llenando el siguiente formulario en línea. </p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <!-- Image -->
+        <div class="ServiceImage">
+            <img src="~/images/form.png" class="img-thumbnail mx-auto d-block" alt="...">
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>

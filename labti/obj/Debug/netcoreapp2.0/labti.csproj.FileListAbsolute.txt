@@ -1,0 +1,12 @@
+C:\Users\leinad\source\repos\labti\labti\bin\Debug\netcoreapp2.0\labti.deps.json
+C:\Users\leinad\source\repos\labti\labti\bin\Debug\netcoreapp2.0\labti.runtimeconfig.json
+C:\Users\leinad\source\repos\labti\labti\bin\Debug\netcoreapp2.0\labti.runtimeconfig.dev.json
+C:\Users\leinad\source\repos\labti\labti\bin\Debug\netcoreapp2.0\labti.dll
+C:\Users\leinad\source\repos\labti\labti\obj\Debug\netcoreapp2.0\labti.csprojResolveAssemblyReference.cache
+C:\Users\leinad\source\repos\labti\labti\obj\Debug\netcoreapp2.0\labti.csproj.CoreCompileInputs.cache
+C:\Users\leinad\source\repos\labti\labti\obj\Debug\netcoreapp2.0\labti.AssemblyInfoInputs.cache
+C:\Users\leinad\source\repos\labti\labti\obj\Debug\netcoreapp2.0\labti.AssemblyInfo.cs
+C:\Users\leinad\source\repos\labti\labti\bin\Debug\netcoreapp2.0\labti.pdb
+C:\Users\leinad\source\repos\labti\labti\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+C:\Users\leinad\source\repos\labti\labti\obj\Debug\netcoreapp2.0\labti.dll
+C:\Users\leinad\source\repos\labti\labti\obj\Debug\netcoreapp2.0\labti.pdb

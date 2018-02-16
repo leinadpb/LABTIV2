@@ -1,0 +1,219 @@
+﻿@model labti.Models.Solicitud
+
+@{
+    ViewData["Title"] = "Solicitud";
+}
+<div class="spaceBetween"></div>
+@if (ViewBag.Success == true)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.SuccessData
+    </div>
+    <h1>@ViewBag.Data</h1>
+    <br />
+    <div>
+        <div align="left">
+            <a asp-controller="Home" asp-action="RoomRequest">◄ Enviar otro formulario</a>
+        </div>
+    </div>
+}
+else
+{
+    @if (ViewBag.Error == true)
+    {
+    <div class="alert alert-danger" role="alert">
+        <p>@ViewBag.ErrorData</p>
+        @if (ViewBag.TimeError != null)
+        {
+            <p>@ViewBag.TimeError</p>
+
+        }
+    </div>
+    }
+    <div>
+        <div>
+            <div>
+                <!-- Header -->
+                <div>
+                    <h4>Formulario de solicitud de aula</h4>
+                </div>
+                <div class="spaceBetween"></div>
+                <div class="instructions">
+                    <h6>Instrucciones</h6>
+                    <ol>
+                        <li>Llene todos los campos obligatorios.</li>
+                        <li>UTILICE el correo institucional.</li>
+                        <li>La solicitud será enviada a la encargada del Laboratorio de TI.</li>
+                        <li>Poco tiempo después de enviada la solicitud, usted recibirá una respuesta donde se acepta o se deniega su solicitud.</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="spaceBetween"></div>
+            <div>
+                <!-- Formulario -->
+                <form asp-controller="Home" asp-action="RoomRequest" asp-antiforgery="true" method="POST">
+                    @{ 
+                        //Get today's date in string
+                        string TodayDate = DateTime.Now.Month.ToString() + "/" + DateTime.Now.Day.ToString() + "/" + DateTime.Now.Year.ToString();
+                    }
+                    <div class="myForm">
+                        <div class="row">
+                            <!-- Header Form -->
+                            <div class="col-md-1"></div>
+                            <div class="col-md-3">
+                                <!-- Logo INTEC y nombre del LAB-->
+                                <div align="center">
+                                    <img class="img-thumbnail" src="~/images/logo-intec-primario.png" alt="INTEC LOGO" />
+                                    <p>
+                                        <span class="FormTitleText">Coordinación de Laboratorios de Ingeniería</span>
+                                    </p>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <!-- Form Title -->
+                                <div class="FormTitle" align="center">
+                                    <span class="FormTitleText"><b>FORMULARIO DE SOLICITUD DE USO DE LABORATORIO PARA ACTIVIDADES ACADÉMICAS</b></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <!--Form details -->
+                                <div align="center">
+                                    <span class="FormTitleText">CLI-RG-4.4-01-01 v.1</span><br />
+                                    <span class="FormTitleText">Página: 1 de 1</span>
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </div>
+                    <div class="spaceBetweenLitte"></div>
+                    <div style="width:100%;font-size:1.25rem;font-weight:600;" align="center"><b>SOLICITUD</b></div>
+                    <div class="spaceBetweenLitte"></div>
+                    <div class="myForm">
+                        <!-- Form content -->
+                        <div class="row" align="center">
+                            <div class="col-md-2 inputFieldForm FormTitleText" align="center"><b>Trimestre</b></div>
+                            <div class="col-md-3 inputFieldForm" align="left">
+                                <select asp-for="Trimestre" class="form-control" id="trimestre">
+                                    <option>FEBRERO-ABRIL</option>
+                                    <option>MAYO-JULIO</option>
+                                    <option>AGOSTO-OCTUBRE</option>
+                                    <option>NOVIEMBRE-ENERO</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 inputFieldForm FormTitleText" align="center"><b>Fecha de solicitud</b></div>
+                            <div class="col-md-2 inputFieldForm" align="left">
+                                <input asp-for="FechaSolicitud" class="form-control form-control-sm" type="date" value=@DateTime.Now.ToShortDateString()>
+                            </div>
+
+                            <div class="col-md-1 inputFieldForm FormTitleText" align="center"><b>Número</b></div>
+                            <div class="col-md-2 inputFieldForm" align="left">
+                                @{ //Generate Request code
+                    var rand = new Random();
+
+                    string code = "SOL";
+
+                    var Month = DateTime.Now.Month;
+                    var Day = DateTime.Now.Day;
+                    var Minute = DateTime.Now.Minute;
+                    var Millisecond = DateTime.Now.Millisecond;
+                    var Second = DateTime.Now.Second;
+
+                    string codenumber = code + "-" + Month.ToString() + Day.ToString() + Minute.ToString() +
+                        Millisecond.ToString() + rand.Next(Second).ToString();
+                                }
+                                <input asp-for="NumeroSolicitud" class="form-control form-control-sm" type="text" value="@codenumber" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Nombre del profesor/a</b></div>
+                            <div class="col-md-8 inputFieldForm" align="left">
+                                <input asp-for="Profesor" class="form-control form-control-sm" type="text">
+                                <span asp-validation-for="Profesor" class="ErrorMessage"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Email del profesor/a</b></div>
+                            <div class="col-md-8 inputFieldForm" align="left">
+                                <input asp-for="ProfesorEmail" class="form-control form-control-sm" type="email">
+                                <span asp-validation-for="ProfesorEmail" class="ErrorMessage"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Nombre y código de asignatura o Taller</b></div>
+                            <div class="col-md-8 inputFieldForm" align="left">
+                                <input asp-for="Asignatura" class="form-control form-control-sm" type="text">
+                                <span asp-validation-for="Asignatura" class="ErrorMessage"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col inputFieldForm FormContentText" align="right"><b>Codigo</b></div>
+                            <div class="col">
+                                <input asp-for="Codigo" type="text" class="form-control" placeholder="Ej: ING225">
+                                <span asp-validation-for="Codigo" class="ErrorMessage"></span>
+                            </div>
+                            <div class="col inputFieldForm FormContentText" align="right"><b>Seccion</b></div>
+                            <div>
+                                <input asp-for="Seccion" type="text" class="form-control" placeholder="Ej: 01">
+                                <span asp-validation-for="HoraFin" class="ErrorMessage"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Descripción de la solicitud</b></div>
+                            <div class="col-md-8 inputFieldForm" align="left">
+                                <textarea asp-for="Descripcion" class="form-control form-control-sm" cols="4"></textarea>
+                                <span asp-validation-for="Seccion" class="ErrorMessage"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Fecha realización del proyecto</b></div>
+                            <div class="col-md-8 inputFieldForm" align="left">
+                                <input asp-for="FechaProyecto" class="form-control form-control-sm" type="date" value="@TodayDate">
+                                <span asp-validation-for="FechaProyecto" class="ErrorMessage"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Cantidad de estudiantes</b></div>
+                            <div class="col-md-8 inputFieldForm" align="left">
+                                <input asp-for="CantEstudiantes" type="number" class="form-control" placeholder="Cantidad de estudiantes" max="40" min="1">
+                                <span asp-validation-for="CantEstudiantes" class="ErrorMessage"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col"></div>
+                            <div class="col">
+                                <input asp-for="HoraInicio" type="number" class="form-control" placeholder="Hora de inicio" max="22" min="7">
+                                <span asp-validation-for="HoraInicio" class="ErrorMessage"></span>
+                            </div>
+                            <div class="col">
+                                <input asp-for="HoraFin" type="number" class="form-control" placeholder="Hora de fin" max="22" min="7">
+                                <span asp-validation-for="HoraFin" class="ErrorMessage"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 inputFieldForm FormContentText" align="right">
+                                <b>Recursos necesarios</b><br />
+                                <span class="FieldNote">
+                                    (equipos, materiales de laboratorio, softwares, personal técnico, otros)
+                                </span>
+                            </div>
+                            <div class="col-md-8 inputFieldForm" align="left">
+                                <textarea asp-for="Recursos" class="form-control form-control-sm" cols="4"></textarea>
+                                <span asp-validation-for="Recursos" class="ErrorMessage"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spaceBetweenLitte"></div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="inputFieldForm">
+                                <button type="submit" class="btn btn-secondary btn-block">Enviar solicitud</button>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="Estado" value="NUEVA" />
+                </form>
+        </div>
+      </div>
+    </div>
+}
