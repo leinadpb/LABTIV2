@@ -5,10 +5,10 @@
 @{
     var courses = new List<String>() { "FD401", "FD402", "FD403", "FD404", "FD405", "FD411", "FD412", "FD413", "FD414", "FD415" };
 }
-@if(ViewBag.SuccessInfo != null)
+@if(!Model.SubjectAdded.Equals(""))
 {
     <div class="alert alert-success">
-        @ViewBag.SuccessInfo
+        @Model.SubjectAdded
     </div>
 
 }

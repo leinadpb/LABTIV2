@@ -9,5 +9,6 @@ namespace labti.ViewModels
     public class HorarioViewModel
     {
         public List<Profesor> Profesores { get; set; }
+        public String SubjectAdded { get; set; }
     }
 }

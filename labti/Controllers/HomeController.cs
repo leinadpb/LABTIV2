@@ -16,14 +16,13 @@ namespace labti.Controllers
 
         private readonly ApplicationDbContext _context;
         private HorarioViewModel HViewModel;
-        private String successInfo;
 
         public HomeController(ApplicationDbContext context)
         {
             _context = context;
             HViewModel = new HorarioViewModel { };
             HViewModel.Profesores = new List<Profesor>();
-            successInfo = null;
+            HViewModel.SubjectAdded = "";
         }
         
 
@@ -51,7 +50,7 @@ namespace labti.Controllers
         {
 
             ViewBag.Search = false;
-            return View();
+            return View(HViewModel);
         }
 
         [HttpGet]
@@ -60,7 +59,6 @@ namespace labti.Controllers
 
             ViewBag.Search = true;
             ViewBag.Room = selectedRoom;
-            if (successInfo != null) ViewBag.SuccessInfo = successInfo;
             var query = _context.Profesores.OrderBy(p => p.FirstName).ThenBy(p => p.LastName);
             HViewModel.Profesores = query.ToList();
             return View(HViewModel);
@@ -78,8 +76,8 @@ namespace labti.Controllers
             _context.Asignaturas.Add(asignatura);
 
             _context.SaveChanges();
-            successInfo = "Asignatura agregada exitosamente.";
-            return RedirectToAction("Schedules", successInfo);
+            HViewModel.SubjectAdded = "Asignatura agregada exitosamente.";
+            return RedirectToAction("Schedules");
         }
 
         private Asignatura CreateSubject(String Nombre, int HoraInicio, int HoraFin, String Seccion, String Codigo,
