@@ -5,7 +5,10 @@
 @{
     var courses = new List<String>() { "FD401", "FD402", "FD403", "FD404", "FD405", "FD411", "FD412", "FD413", "FD414", "FD415" };
 }
-@if(!Model.SubjectAdded.Equals(""))
+@section Styles{
+    <link rel="stylesheet" href="~/css/timetable/styles/timetablejs.css" />
+}
+@if (!Model.SubjectAdded.Equals(""))
 {
     <div class="alert alert-success">
         @Model.SubjectAdded
@@ -14,7 +17,7 @@
 }
 <div class="spaceBetween"></div>
 <div>
-    <form asp-controller="Home" asp-action="Schedules" method="get">
+    <form asp-controller="Home" asp-action="Schedules" method="post">
         <div class="form-group">
             <label for="room"><b>Seleccione un aula</b></label>
             <select name="selectedRoom" class="form-control" id="room" required>
@@ -23,12 +26,13 @@
                     <option>@c</option>
                 }
             </select>
-            <button type="submit" class="btn btn-sm btn-block">Ver horario</button>
+            <button type="submit" class="btn btn-sm btn-primary">Ver horario</button>
         </div>
     </form>
+
 </div>
 <hr />
-<div>
+<table>
     @if (ViewBag.Search == true)
     {
         @if (ViewBag.Room != null)
@@ -80,7 +84,7 @@
                                     <div class="col-md-4 inputFieldForm FormContentText" align="right"><b>Profesor</b></div>
                                     <div class="col-md-8 inputFieldForm" align="left">
                                         <select name="Profesor" class="form-control" id="trimestre">
-                                            @foreach(var p in Model.Profesores)
+                                            @foreach (var p in Model.Profesores)
                                             {
                                                 string fullname = p.FirstName + " " + p.LastName;
                                                 <option value="@p.ProfesorId">@fullname</option>
@@ -116,7 +120,7 @@
                                             <input name="isMiercoles" class="form-check-input" type="checkbox" id="miercoles" value="true">
                                             <input name="isMiercoles" type="hidden" id="miercoles" value="false">
                                             <label class="form-check-label" for="miercoles">
-                                               MIERCOLES
+                                                MIERCOLES
                                             </label>
                                         </div>
                                     </div>
@@ -169,6 +173,7 @@
                 </div>
             </div>
             <!-- -->
+            <div><b>@ViewBag.TotalAsigs</b> asignaturas encontradas.</div>
             <div align="center">
                 <h4>Horario de clase - <span>@ViewBag.Room</span></h4>
                 <div>
@@ -178,38 +183,48 @@
                 </div>
             </div>
             <div class="spaceBetweenLitte"></div>
-            <!-- Schedule -->
-            <div class="Schedule">
-                <table class="table table-bordered table-dark">
-                    <thead>
-                        <tr>
-                            <th scope="col">H</th>
-                            <th scope="col">LUN</th>
-                            <th scope="col">MAR</th>
-                            <th scope="col">MIE</th>
-                            <th scope="col">JUE</th>
-                            <th scope="col">VIE</th>
-                            <th scope="col">SAB</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 7; i <= 22; i++)
-                        {
-                            <tr>
-                                <th scope="row">@i</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
 
+            <!-- Schedule -->
+            <div class="timetable"></div>
 
         }
     }
-</div>
+    </div>
+    @section Scripts {
+
+        <script type="text/javascript" src="~/js/timetable/scripts/timetable.min.js"></script>
+        <script type="text/javascript">
+
+        var timetable = new Timetable();
+        let LUNES = "LUNES";
+        let MARTES = "MARTES";
+        let MIERCOLES = "MIERCOLES";
+        let JUEVES = "JUEVES";
+        let VIERNES = "VIERNES";
+        let SABADO = "SABADO";
+        timetable.setScope(7, 22); // optional, only whole hours between 0 and 23
+        timetable.addLocations([LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO]);
+        var renderer = new Timetable.Renderer(timetable);
+
+        //Get subject's list
+        var asigs = @Html.Raw(ViewBag.Asigs);
+        for (let i = 0; i < asigs.length; i++) {
+            var days = [];
+            if (asigs[i].isLunes) days.push(LUNES);
+            if (asigs[i].isMartes) days.push(MARTES);
+            if (asigs[i].isMiercoles) days.push(MIERCOLES);
+            if (asigs[i].isJueves) days.push(JUEVES);
+            if (asigs[i].isViernes) days.push(VIERNES);
+            if (asigs[i].isSabado) days.push(SABADO);
+            //alert(asigs[i].Nombre);
+            addSubject(asigs[i].Nombre, days, asigs[i].HoraInicio, asigs[i].HoraFin);
+        }
+        function addSubject(name, days, horai, horaf) {
+            for (let i= 0; i < days.length; i++){
+                timetable.addEvent(name, days[i], new Date(2018, 7, 17, horai, 0), new Date(2018, 7, 17, horaf, 0));
+            }
+            renderer.draw('.timetable'); // any css selecto
+        }
+        </script>
+
+    }

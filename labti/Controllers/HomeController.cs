@@ -8,6 +8,7 @@ using labti.Models;
 using labti.Data;
 using Microsoft.EntityFrameworkCore;
 using labti.ViewModels;
+using Newtonsoft.Json;
 
 namespace labti.Controllers
 {
@@ -22,13 +23,14 @@ namespace labti.Controllers
             _context = context;
             HViewModel = new HorarioViewModel { };
             HViewModel.Profesores = new List<Profesor>();
+            HViewModel.Asignaturas = new List<Asignatura>();
             HViewModel.SubjectAdded = "";
         }
-        
+
 
         public IActionResult Index()
         {
-            
+
             return View();
         }
 
@@ -53,16 +55,32 @@ namespace labti.Controllers
             return View(HViewModel);
         }
 
-        [HttpGet]
+        public IActionResult TestSchedule(string selectedRoom) //Testing controller
+        {
+            ViewBag.Search = true;
+            ViewBag.Room = selectedRoom;
+            var query2 = _context.Asignaturas.Where(a => a.Curso.CursoName.Equals(selectedRoom)).OrderBy(a => a.HoraInicio)
+                        .Join(_context.Profesores, a => a.ProfesorId, p => p.ProfesorId, (a, p) => a);
+            HViewModel.Asignaturas = query2.ToList();
+            string json = JsonConvert.SerializeObject(query2.ToList());
+            ViewBag.Asigs = json;
+            return View(HViewModel);
+        }
+
+        [HttpPost]
         public IActionResult Schedules(String selectedRoom)
         {
 
             ViewBag.Search = true;
             ViewBag.Room = selectedRoom;
-            var query = _context.Profesores.OrderBy(p => p.FirstName).ThenBy(p => p.LastName);
-           //var query2 = _context.Asignaturas.OrderBy(a => a.D)
-            HViewModel.Profesores = query.ToList();
+            var query2 = _context.Asignaturas.Where(a => a.Curso.CursoName.Equals(selectedRoom)).OrderBy(a => a.HoraInicio)
+                        .Join(_context.Profesores, a => a.ProfesorId, p => p.ProfesorId, (a, p) => a);
+            HViewModel.Asignaturas = query2.ToList();
             
+            string json = JsonConvert.SerializeObject(query2.ToList());
+            ViewBag.Asigs = json;
+            HViewModel.Profesores = _context.Profesores.OrderBy(p => p.FirstName).ThenBy(p => p.LastName).ToList();
+            ViewBag.TotalAsigs = query2.ToList().Count();
             return View(HViewModel);
         }
 

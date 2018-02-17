@@ -11,9 +11,10 @@ __**Daniel Peña**__
 Estudiante de término de la carrera Ingeniería de Software en el Instituto Tecnológico de Santo Domingo.
 
 ## Actividades a realizar
-* Desplegar asignaturas por aula.
+* Desplegar asignaturas por aula. (Listo)
 * Enviar correo a profesores una vez aprobada/denegada su solicitud.
 * Abilitar la autenticación de usuario (Sólo empleados del LABTI).
 * Proteger las rutas administrativas
+* Evitar choque de asignaturas al agregar una nueva
 * ...
 

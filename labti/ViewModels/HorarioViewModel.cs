@@ -10,5 +10,6 @@ namespace labti.ViewModels
     {
         public List<Profesor> Profesores { get; set; }
         public String SubjectAdded { get; set; }
+        public List<Asignatura> Asignaturas { get; set; }
     }
 }

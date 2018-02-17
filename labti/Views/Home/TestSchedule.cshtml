@@ -1,0 +1,53 @@
+﻿@model HorarioViewModel
+@{
+    ViewData["Title"] = "Test schedule creation";
+}
+@{
+    var asigs = Model.Asignaturas;
+}
+@section Styles{ 
+    <link rel="stylesheet" href="~/css/timetable/styles/timetablejs.css" />
+}
+<div class="spaceBetween"></div>
+<div align="center"><b>Testing schedule</b></div>
+<hr />
+<!-- Just showing subjects in FD401 -->
+
+<div class="timetable"></div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/timetable/scripts/timetable.min.js"></script>
+    <script type="text/javascript">
+
+        var timetable = new Timetable();
+        let LUNES = "LUNES";
+        let MARTES = "MARTES";
+        let MIERCOLES = "MIERCOLES";
+        let JUEVES = "JUEVES";
+        let VIERNES = "VIERNES";
+        let SABADO = "SABADO";
+        timetable.setScope(7, 22); // optional, only whole hours between 0 and 23
+        timetable.addLocations([LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO]);
+        var renderer = new Timetable.Renderer(timetable);
+
+        //Get subject's list
+        var asigs = @Html.Raw(ViewBag.Asigs);
+        for (let i = 0; i < asigs.length; i++) {
+            var days = [];
+            if (asigs[i].isLunes) days.push(LUNES);
+            if (asigs[i].isMartes) days.push(MARTES);
+            if (asigs[i].isMiercoles) days.push(MIERCOLES);
+            if (asigs[i].isJueves) days.push(JUEVES);
+            if (asigs[i].isViernes) days.push(VIERNES);
+            if (asigs[i].isSabado) days.push(SABADO);
+            alert(asigs[i].Nombre);
+            addSubject(asigs[i].Nombre, days, asigs[i].HoraInicio, asigs[i].HoraFin);
+        }
+        function addSubject(name, days, horai, horaf) {
+            for (let i= 0; i < days.length; i++){
+                timetable.addEvent(name, days[i], new Date(2018, 7, 17, horai, 0), new Date(2018, 7, 17, horaf, 0));
+            }
+            renderer.draw('.timetable'); // any css selecto
+        }
+    </script>
+}
