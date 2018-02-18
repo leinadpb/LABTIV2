@@ -176,11 +176,15 @@
             <div><b>@ViewBag.TotalAsigs</b> asignaturas encontradas.</div>
             <div align="center">
                 <h4>Horario de clase - <span>@ViewBag.Room</span></h4>
-                <div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSubject">
-                        <span style="font-size:1.4rem;font-weight:600;color:white;"><b>+</b></span>
-                    </button>
-                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSubject">
+                            <span style="font-size:1.4rem;font-weight:600;color:white;"><b>+</b></span>
+                        </button>
+                    </div>
+                }
+
             </div>
             <div class="spaceBetweenLitte"></div>
 
