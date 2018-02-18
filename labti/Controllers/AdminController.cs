@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using labti.Data;
 using labti.Models;
 using labti.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace labti.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,7 +28,7 @@ namespace labti.Controllers
             SViewModel.Profesores = new List<Profesor>();
         }
 
-
+        [Authorize]
         public IActionResult Solicitudes()
         {
            
@@ -59,6 +61,7 @@ namespace labti.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Approve(int? id, String CursoAsignado, String Notas, int ProfesorAsignado)
         {
             if(id != null)
@@ -162,6 +165,7 @@ namespace labti.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Deny(int? id)
         {
             var errors = new ErrorMock { };
@@ -180,6 +184,7 @@ namespace labti.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Delete(int? id)
         {
             var errors = new ErrorMock { };
@@ -198,6 +203,7 @@ namespace labti.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult AddAsignatura(String CourseName)
         {
 

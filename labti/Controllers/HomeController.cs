@@ -9,6 +9,7 @@ using labti.Data;
 using Microsoft.EntityFrameworkCore;
 using labti.ViewModels;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace labti.Controllers
 {
@@ -55,6 +56,7 @@ namespace labti.Controllers
             return View(HViewModel);
         }
 
+        [Authorize]
         public IActionResult TestSchedule(string selectedRoom) //Testing controller
         {
             ViewBag.Search = true;
@@ -85,6 +87,7 @@ namespace labti.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult AddAsignatura(String Nombre, int HoraInicio, int HoraFin, String Seccion, String Codigo,
             String CourseName, int Profesor, bool isLunes, bool isMartes, bool isMiercoles, bool isJueves, bool isViernes,
             bool isSabado)
@@ -100,6 +103,7 @@ namespace labti.Controllers
             return RedirectToAction("Schedules");
         }
 
+        [Authorize]
         private Asignatura CreateSubject(String Nombre, int HoraInicio, int HoraFin, String Seccion, String Codigo,
             Curso Curso, int Profesor, bool lu, bool ma, bool mi, bool ju, bool vi, bool sa)
         {

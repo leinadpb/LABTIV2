@@ -15,8 +15,7 @@ using labti.Models.AccountViewModels;
 using labti.Services;
 
 namespace labti.Controllers
-{
-    [Authorize]
+{   [Authorize]
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
@@ -205,7 +204,6 @@ namespace labti.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -213,7 +211,6 @@ namespace labti.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
