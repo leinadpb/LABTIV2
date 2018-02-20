@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "69ddc299d791c79b31b26974c14ff499befda8e5"
+    "signature": "a0b72955e2454f2fae43e26513d67320502024c9"
   },
   "compilationOptions": {
     "defines": [
@@ -27,6 +27,7 @@
           "Microsoft.EntityFrameworkCore.Tools": "2.0.1",
           "Microsoft.NETCore.App": "2.0.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.2",
+          "Sendgrid": "9.9.0",
           "bootstrap": "4.0.0"
         },
         "runtime": {
@@ -2693,6 +2694,19 @@
             "rid": "win-x86",
             "assetType": "native"
           }
+        }
+      },
+      "Sendgrid/9.9.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "2.0.1",
+          "NETStandard.Library": "2.0.0",
+          "Newtonsoft.Json": "10.0.1"
+        },
+        "runtime": {
+          "lib/netstandard1.3/SendGrid.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/SendGrid.dll": {}
         }
       },
       "SQLitePCLRaw.bundle_green/1.1.7": {
@@ -5646,6 +5660,13 @@
       "sha512": "sha512-YhEdSQUsTx+C8m8Bw7ar5/VesXvCFMItyZF7G1AUY+OM0VPZUOeAVpJ4Wl6fydBGUYZxojTDR3I6Bj/+BPkJNA==",
       "path": "runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0",
       "hashPath": "runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512"
+    },
+    "Sendgrid/9.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3v4aIYXqTvhnozBvpCyf+U9DMiZzN9s4m7tpl8RjVHRN0IUKSFwJ0eio7GVjT03vTTUOXhOY8M+15zLYzQGhYQ==",
+      "path": "sendgrid/9.9.0",
+      "hashPath": "sendgrid.9.9.0.nupkg.sha512"
     },
     "SQLitePCLRaw.bundle_green/1.1.7": {
       "type": "package",

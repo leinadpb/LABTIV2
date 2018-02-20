@@ -12,7 +12,7 @@ Estudiante de término de la carrera Ingeniería de Software en el Instituto Tec
 
 ## Actividades a realizar
 * Desplegar asignaturas por aula. (Listo)
-* Enviar correo a profesores una vez aprobada/denegada su solicitud.
+* Enviar correo a profesores una vez aprobada/denegada su solicitud. (Listo)
 * Abilitar la autenticación de usuario (Sólo empleados del LABTI). (Listo)
 * Proteger las rutas administrativas (Listo)
 * Evitar choque de asignaturas al agregar una nueva (Listo)

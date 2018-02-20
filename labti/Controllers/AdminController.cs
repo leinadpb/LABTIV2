@@ -7,6 +7,8 @@ using labti.Data;
 using labti.Models;
 using labti.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace labti.Controllers
 {
@@ -114,11 +116,13 @@ namespace labti.Controllers
 
                     //Cambiar estado de la solicitud
                     solicitud.Estado = APROBADA;
+                    solicitud.Notas = Notas;
 
                     //Guardar el contexto 
                     _context.SaveChanges();
 
                     SViewModel.Errors.AddedSuccessfully = "Se ha agregado la asignatura al calendario exitosamente.";
+                    SendEmail(solicitud.ProfesorEmail, "digrape07@gmail.com", "Laboratorio de TI - INTEC", solicitud, "APROBADA", curso.CursoName).Wait();
                 }
                 else
                 {
@@ -222,6 +226,7 @@ namespace labti.Controllers
                 solicitud.Estado = DENEGADA;
                 _context.SaveChanges();
                 SViewModel.Errors.DeniedSuccessfully = "La solicitud ha sido denegada exitosamente.";
+                SendEmail(solicitud.ProfesorEmail, "digrape07@gmail.com", "Laboratorio de TI - INTEC", solicitud, "DENEGADA", "").Wait();
             }
             else
             {
@@ -255,6 +260,33 @@ namespace labti.Controllers
         {
 
             return View();
+        }
+
+        private async Task SendEmail(String toMail, String fromMail, String subject, Solicitud solicitud, String msg_estado, String nameCurso)
+        {
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY"); //Windows user variable
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress(fromMail, "Daniel Peña");
+            var subject_mail = subject;
+            var to = new EmailAddress(toMail, "Work Daniel");
+            var plainTextContent = "and easy to do anywhere, even with C#";
+            var htmlContent = "";
+            if (msg_estado.Equals("APROBADA"))
+            {
+                htmlContent = "<strong> Su solicitud ha sido " + msg_estado + "</strong>" + "\n" +
+                                "Querido/a " + solicitud.Profesor + "," + "\n" +
+                                "<strong>Aula asignada: </strong>" + nameCurso +
+                                "<strong>Notas: </strong>" + solicitud.Notas;
+            }
+            else
+            {
+                htmlContent = "<strong> Su solicitud ha sido " + msg_estado + "</strong>" + "\n" +
+                "Querido/a " + solicitud.Profesor + "," + "\n" +
+                solicitud.Notas;
+            }
+            
+            var msg = MailHelper.CreateSingleEmail(from, to, subject_mail, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
         }
 
         private bool existsAsignatura(Asignatura toAdd, Curso curso)
