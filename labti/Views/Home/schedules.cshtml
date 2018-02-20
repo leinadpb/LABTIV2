@@ -8,13 +8,24 @@
 @section Styles{
     <link rel="stylesheet" href="~/css/timetable/styles/timetablejs.css" />
 }
-@if (!Model.SubjectAdded.Equals(""))
+@if (ViewBag.Info != null)
 {
     <div class="alert alert-success">
-        @Model.SubjectAdded
+        @ViewBag.Info
     </div>
 
 }
+@if (Model != null)
+{
+    @if (Model.SubjectAdded != null)
+    {
+        <div class="alert alert-info">
+            @Model.SubjectAdded
+        </div>
+    }
+
+}
+
 <div class="spaceBetween"></div>
 <div>
     <form asp-controller="Home" asp-action="Schedules" method="post">

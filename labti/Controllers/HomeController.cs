@@ -18,6 +18,7 @@ namespace labti.Controllers
 
         private readonly ApplicationDbContext _context;
         private HorarioViewModel HViewModel;
+        
 
         public HomeController(ApplicationDbContext context)
         {
@@ -25,7 +26,7 @@ namespace labti.Controllers
             HViewModel = new HorarioViewModel { };
             HViewModel.Profesores = new List<Profesor>();
             HViewModel.Asignaturas = new List<Asignatura>();
-            HViewModel.SubjectAdded = "";
+            //HViewModel.SubjectAdded = "";
         }
 
 
@@ -53,6 +54,12 @@ namespace labti.Controllers
         {
 
             ViewBag.Search = false;
+            if(HViewModel.SubjectAdded != null)
+            {
+                if (!HViewModel.SubjectAdded.Equals(""))
+                    ViewBag.Info = HViewModel.SubjectAdded;
+            }
+            
             return View(HViewModel);
         }
 
@@ -93,14 +100,85 @@ namespace labti.Controllers
             bool isSabado)
         {
             Curso curso = _context.Cursos.Where(c => c.CursoName.Equals(CourseName)).FirstOrDefault();
-
+            String info = "";
             Asignatura asignatura = CreateSubject(Nombre, HoraInicio, HoraFin, Seccion, Codigo, curso, Profesor, isLunes, isMartes, isMiercoles, isJueves, isViernes, isSabado);
 
-            _context.Add(asignatura);
+            if (!existsAsignatura(asignatura, curso))
+            {
+                _context.Add(asignatura);
 
-            _context.SaveChanges();
-            HViewModel.SubjectAdded = "Asignatura agregada exitosamente.";
-            return RedirectToAction("Schedules");
+                _context.SaveChanges();
+                HViewModel.SubjectAdded = "Asignatura agregada exitosamente.";
+            }
+            else
+            {
+                HViewModel.SubjectAdded = "La asignatura provoca un choque con otra ya existente.";
+            }
+
+            //return RedirectToAction("Schedules", new HorarioViewModel { SubjectAdded = info});
+            return View("Schedules", HViewModel);
+        }
+
+        private bool existsAsignatura(Asignatura toAdd, Curso curso)
+        {
+            bool exists = false;
+            List<Asignatura> asigs = _context.Asignaturas.Where(asg => asg.CursoId == curso.CursoId).ToList();
+            foreach(Asignatura old in asigs)
+            {
+                if (toAdd.isLunes)
+                {
+                    if ((toAdd.HoraInicio >= old.HoraInicio && toAdd.HoraInicio < old.HoraFin) && old.isLunes) // choca
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (toAdd.isMartes)
+                {
+                    if ((toAdd.HoraInicio >= old.HoraInicio && toAdd.HoraInicio < old.HoraFin) && old.isMartes) // choca
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (toAdd.isMiercoles)
+                {
+                    if ((toAdd.HoraInicio >= old.HoraInicio && toAdd.HoraInicio < old.HoraFin) && old.isMiercoles) // choca
+                    {
+                        exists = true;
+                        break;
+                    }
+
+                }
+                if (toAdd.isJueves)
+                {
+                    if ((toAdd.HoraInicio >= old.HoraInicio && toAdd.HoraInicio < old.HoraFin) && old.isJueves) // choca
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (toAdd.isViernes)
+                {
+                    if ((toAdd.HoraInicio >= old.HoraInicio && toAdd.HoraInicio < old.HoraFin) && old.isViernes) // choca
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (toAdd.isSabado)
+                {
+                    if ((toAdd.HoraInicio >= old.HoraInicio && toAdd.HoraInicio < old.HoraFin) && old.isSabado) // choca
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                
+            }
+
+
+            return exists;
         }
 
         [Authorize]

@@ -8,9 +8,9 @@
 <div class="spaceBetween"></div>
 @if (Model.Errors != null) //Show Errors and information
 {
-    @if (Model.Errors.AddedSuccessfully != null)
+    @if (!Model.Errors.AddedSuccessfully.Equals(""))
     {
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-info" role="alert">
             @{
                 string data = Model.Errors.AddedSuccessfully;
             }

@@ -15,7 +15,7 @@ Estudiante de término de la carrera Ingeniería de Software en el Instituto Tec
 * Enviar correo a profesores una vez aprobada/denegada su solicitud.
 * Abilitar la autenticación de usuario (Sólo empleados del LABTI). (Listo)
 * Proteger las rutas administrativas (Listo)
-* Evitar choque de asignaturas al agregar una nueva
+* Evitar choque de asignaturas al agregar una nueva (Listo)
 * Habilitar opción de añadir explicación por le denegación de la solicitud en /Admin/Solicitudes/Deny?
 * ...
 
